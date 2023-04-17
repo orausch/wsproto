@@ -84,8 +84,7 @@ def test_abnormal_closure() -> None:
 def test_close_whilst_closing() -> None:
     client = Connection(CLIENT)
     client.send(CloseConnection(code=CloseReason.NORMAL_CLOSURE))
-    with pytest.raises(LocalProtocolError):
-        client.send(CloseConnection(code=CloseReason.NORMAL_CLOSURE))
+    client.send(CloseConnection(code=CloseReason.NORMAL_CLOSURE))
 
 
 def test_send_after_close() -> None:

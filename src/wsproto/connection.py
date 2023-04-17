@@ -97,6 +97,7 @@ class Connection:
         elif isinstance(event, CloseConnection) and self.state in {
             ConnectionState.OPEN,
             ConnectionState.REMOTE_CLOSING,
+            ConnectionState.LOCAL_CLOSING,
         }:
             data += self._proto.close(event.code, event.reason)
             if self.state == ConnectionState.REMOTE_CLOSING:
