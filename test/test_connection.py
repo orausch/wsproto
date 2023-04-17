@@ -119,6 +119,27 @@ def test_ping_pong(client_sends: bool) -> None:
     assert event.payload == payload
 
 
+def test_ping_and_close_race() -> None:
+    client = Connection(CLIENT)
+    server = Connection(SERVER)
+
+    payload = b"x" * 23
+    ping_data = server.send(Ping(payload=payload))
+    close_data = client.send(CloseConnection(CloseReason.NORMAL_CLOSURE, "bye"))
+    client.receive_data(ping_data)
+    server.receive_data(close_data)
+
+    event = next(client.events())
+    assert isinstance(event, Ping)
+    assert event.payload == payload
+    client.send(event.response())
+
+    server.receive_data(client.send(event.response()))
+
+    event = next(server.events())
+    assert isinstance(event, CloseConnection)
+
+
 def test_unsolicited_pong() -> None:
     client = Connection(CLIENT)
     server = Connection(SERVER)

@@ -90,9 +90,9 @@ class Connection:
         data = b""
         if isinstance(event, Message) and self.state == ConnectionState.OPEN:
             data += self._proto.send_data(event.data, event.message_finished)
-        elif isinstance(event, Ping) and self.state == ConnectionState.OPEN:
+        elif isinstance(event, Ping):
             data += self._proto.ping(event.payload)
-        elif isinstance(event, Pong) and self.state == ConnectionState.OPEN:
+        elif isinstance(event, Pong):
             data += self._proto.pong(event.payload)
         elif isinstance(event, CloseConnection) and self.state in {
             ConnectionState.OPEN,
