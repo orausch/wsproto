@@ -235,7 +235,7 @@ class TextMessage(Message[str]):  # pylint: disable=unsubscriptable-object
     """
 
     # https://github.com/python/mypy/issues/5744
-    data: str
+    data: str = field(repr=False)
 
 
 @dataclass(frozen=True)
@@ -254,7 +254,7 @@ class BytesMessage(Message[bytes]):  # pylint: disable=unsubscriptable-object
     """
 
     # https://github.com/python/mypy/issues/5744
-    data: bytes
+    data: bytes = field(repr=False)
 
 
 @dataclass(frozen=True)
